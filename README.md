@@ -241,7 +241,7 @@ Não identifiquei defeitos funcionais nos cenários realizados. Como melhoria, s
 
 Os testes de caixa cinza ajudaram a relacionar o que foi enviado com o que a API retornou. Conhecer a estrutura da chamada permitiu corrigir a configuração inicial e distinguir uma rejeição esperada de um comportamento incorreto.
 
-Para concluir a entrega conforme o enunciado, é necessário adicionar as evidências do Supabase, resolver a diferença entre Postman Web e Desktop e publicar o repositório de forma pública no GitHub.
+A documentação foi organizada em repositório público no GitHub. Para concluir a entrega conforme o enunciado, ainda é necessário adicionar as evidências do Supabase e resolver a diferença entre Postman Web e Desktop.
 
 ## Referências
 
