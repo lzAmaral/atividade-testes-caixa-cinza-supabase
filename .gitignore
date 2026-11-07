@@ -1,0 +1,4 @@
+.DS_Store
+.env
+.env.*
+*.local.postman_environment.json
