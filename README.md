@@ -18,6 +18,7 @@ postman/
   testes-autenticacao.postman_collection.json
   supabase-exemplo.postman_environment.json
 prints/
+  supabase-projeto.png
   ct01-login-valido.png
   ct02-senha-incorreta.png
   ct03-usuario-inexistente.png
@@ -50,7 +51,13 @@ A URL foi obtida em **Connect**, no valor de `NEXT_PUBLIC_SUPABASE_URL`. A chave
 
 A configuração teve como objetivo disponibilizar um serviço real de autenticação para os testes HTTP. A chave `anon` identifica o acesso ao projeto; o e-mail e a senha identificam o usuário que solicita uma sessão.
 
-**Evidências desta etapa:** o projeto, o usuário, o provedor habilitado e a tela de chaves foram apresentados durante a atividade. Os arquivos originais desses prints ainda precisam ser adicionados à pasta `prints/` e incorporados aqui. As evidências do Postman e da planilha já acompanham esta versão.
+## Evidência do projeto e do painel
+
+O print abaixo mostra o projeto criado, seu painel, a URL da API e o status **Healthy**. O nome do projeto contém a identificação do aluno.
+
+![Projeto Atividade_Ohata_Luiz-Amaral, URL da API e painel com status Healthy](prints/supabase-projeto.png)
+
+**Evidências ainda pendentes desta etapa:** adicionar os arquivos dos prints de **Authentication → Users** (usuário criado), **Sign In / Providers** (Email habilitado) e **API Keys** (tipo da chave utilizada, sem expor credenciais completas). Essas telas foram apresentadas durante a atividade, mas seus arquivos originais não estavam na pasta fornecida. O print do projeto, as evidências do Postman e a visualização da planilha já acompanham esta versão.
 
 # Configuração do Postman
 
@@ -229,7 +236,7 @@ Os **cinco cenários** apresentaram o comportamento esperado: o login válido re
 
 Os testes cobrem somente os cenários descritos. Não foram testados expiração e renovação de token, logout, bloqueio por tentativas, permissões de dados ou desempenho. A presença de `access_token` foi verificada no JSON; sua validade para acessar outro endpoint não foi testada nesta atividade.
 
-O resultado funcional dos testes foi satisfatório. A entrega ainda precisa incorporar as evidências do painel Supabase e atender à exigência de ferramenta do enunciado: as execuções registradas são da versão Web, e não do aplicativo Desktop.
+O resultado funcional dos testes foi satisfatório. A entrega ainda precisa complementar as evidências de configuração do Supabase com os prints do usuário, do provedor Email e das chaves. Também é necessário atender à exigência de ferramenta do enunciado: as execuções registradas são da versão Web, e não do aplicativo Desktop.
 
 # Conclusão
 
