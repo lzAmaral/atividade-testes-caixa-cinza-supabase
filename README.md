@@ -1,115 +1,70 @@
 # Introdução
 
-**Aluno:** Luiz Gustavo de Campo Amaral  
-**Atividade:** Teste caixa cinza com Supabase e Postman  
-**Data da execução:** 07/11/2026
+Aluno: Luiz Gustavo de Campo Amaral  
+Data: 07/11/2026
 
-Esta atividade registra testes funcionais da API de autenticação do Supabase. Criei um usuário de teste e enviei requisições HTTP pelo Postman para verificar o login com dados válidos, inválidos e vazios.
+Nesta atividade, configurei um projeto no Supabase e usei o Postman para testar o login por e-mail e senha. Fiz os testes diretamente na API, sem criar uma interface.
 
-A abordagem é de caixa cinza porque os testes utilizam conhecimento do endpoint, dos headers, do corpo JSON e das respostas da API, sem examinar toda a implementação interna do serviço de autenticação. Não foi desenvolvida interface gráfica.
-
-> **Ferramenta utilizada:** os testes documentados foram executados no **Postman Web**, com o Cloud Agent. O enunciado pede **Postman Desktop**; a utilização da versão Web é uma diferença em relação ao requisito e depende da aceitação do professor. Os registros não apresentam uma execução no aplicativo Desktop.
-
-## Organização do repositório
-
-```text
-README.md
-postman/
-  testes-autenticacao.postman_collection.json
-  supabase-exemplo.postman_environment.json
-prints/
-  supabase-projeto.png
-  ct01-login-valido.png
-  ct02-senha-incorreta.png
-  ct03-usuario-inexistente.png
-  ct04-campos-vazios.png
-  ct05-credenciais-invalidas.png
-  postman-endpoint-headers.png
-  postman-workspace-variaveis.png
-  postman-ambiente-url.png
-  planilha-testes.png
-planilha/
-  testes.xlsx
-  testes.csv
-```
-
-As evidências do Postman são capturas das respostas que permaneceram abertas após as execuções do aluno. O enquadramento exclui o painel que exibe a senha e, no login válido, deixa o token completo fora da imagem. Os dados de status HTTP, entradas e mensagens não foram substituídos. O JSON exportado contém as requisições; ele não inclui respostas salvas. Os resultados estão registrados nos prints, neste README e na planilha.
+O teste é de caixa cinza porque eu conhecia o endpoint, os headers e o formato dos dados enviados, mas não tinha acesso à implementação interna da autenticação.
 
 # Objetivo da Atividade
 
-Configurar a autenticação por e-mail e senha, compreender as partes de uma requisição HTTP e verificar como a API responde aos cinco cenários exigidos. A documentação permite comparar o resultado esperado com o comportamento observado e localizar a evidência de cada execução.
+Verificar se a API permite o login com os dados corretos e recusa as tentativas com senha errada, usuário inexistente, campos vazios e credenciais inválidas. Também registrei as respostas e os prints de cada teste.
 
 # Configuração do Supabase
 
-O projeto foi criado no painel do Supabase, na organização `Facul`, com o nome `Atividade_Ohata_Luiz-Amaral`. Esse nome identifica o aluno no ambiente. No menu **Authentication → Sign In / Providers**, o provedor **Email** estava habilitado, e a opção **Confirm email** estava ligada.
+Criei o projeto `Atividade_Ohata_Luiz-Amaral`, na organização `Facul`. Configurei a autenticação por e-mail e senha e cadastrei um usuário em Authentication > Users para fazer os testes.
 
-Um usuário foi criado em **Authentication → Users**, com e-mail e senha próprios para os testes. O endereço cadastrado é utilizado pela variável `email`; a senha é mantida na variável `password`. A senha do usuário de autenticação é diferente da senha do banco de dados do projeto. O login válido confirmou que as credenciais do usuário estavam utilizáveis.
+O provedor Email estava habilitado em Sign In / Providers. Depois, copiei a URL do projeto e a chave `anon`, disponível em API Keys > View legacy API keys. Guardei esses valores para usar no Postman.
 
-**URL da API:** `https://aheutzbwjtjvitedqawb.supabase.co`
+URL do projeto:
 
-A URL foi obtida em **Connect**, no valor de `NEXT_PUBLIC_SUPABASE_URL`. A chave utilizada foi a **anon legada**, localizada em **Settings → API Keys → View legacy API keys**. Ela foi armazenada em `api_key`. Não foi utilizada chave `service_role` nem chave secreta administrativa.
+```text
+https://aheutzbwjtjvitedqawb.supabase.co
+```
 
-A configuração teve como objetivo disponibilizar um serviço real de autenticação para os testes HTTP. A chave `anon` identifica o acesso ao projeto; o e-mail e a senha identificam o usuário que solicita uma sessão.
+Essa configuração permitiu testar o login em um ambiente real. O nome do projeto também identifica o aluno responsável pela atividade.
 
-## Evidência do projeto e do painel
-
-O print abaixo mostra o projeto criado, seu painel, a URL da API e o status **Healthy**. O nome do projeto contém a identificação do aluno.
-
-![Projeto Atividade_Ohata_Luiz-Amaral, URL da API e painel com status Healthy](prints/supabase-projeto.png)
-
-**Evidências ainda pendentes desta etapa:** adicionar os arquivos dos prints de **Authentication → Users** (usuário criado), **Sign In / Providers** (Email habilitado) e **API Keys** (tipo da chave utilizada, sem expor credenciais completas). Essas telas foram apresentadas durante a atividade, mas seus arquivos originais não estavam na pasta fornecida. O print do projeto, as evidências do Postman e a visualização da planilha já acompanham esta versão.
+![Projeto criado no Supabase](prints/supabase-projeto.png)
 
 # Configuração do Postman
 
-Foi utilizado o Workspace `facul`. As cinco requisições foram organizadas na coleção **Testes de Autenticação**. O Environment **Supabase - Testes** reúne os valores reutilizados nas chamadas e foi selecionado no topo do Postman antes dos envios.
+Usei o Postman Web no Workspace `facul`. Criei a coleção `Testes de Autenticação` e o ambiente `Supabase - Testes`.
 
-| Variável | Finalidade | Valor na entrega pública |
-| --- | --- | --- |
-| `base_url` | Endereço base da API do projeto | URL do projeto |
-| `api_key` | Chave anon legada enviada nos headers | Omitido; preencher no ambiente local |
-| `email` | E-mail do usuário cadastrado para o teste válido | Omitido; preencher no ambiente local |
-| `password` | Senha do usuário de autenticação | Omitido; preencher no ambiente local |
+No ambiente, configurei as seguintes variáveis:
 
-As variáveis são referenciadas com duas chaves, como `{{base_url}}`. No Environment, as alterações são salvas automaticamente. As requisições foram salvas após sua configuração. O Postman foi usado para editar as entradas, enviar cada chamada e inspecionar manualmente o status HTTP e o JSON retornado.
+| Variável | Finalidade |
+| --- | --- |
+| `base_url` | URL do projeto Supabase |
+| `api_key` | Chave anon do projeto |
+| `email` | E-mail do usuário cadastrado |
+| `password` | Senha do usuário de teste |
 
-![Workspace, coleção e nomes das quatro variáveis; coluna de valores fora do recorte](prints/postman-workspace-variaveis.png)
+Selecionei esse ambiente antes de enviar as requisições. Assim, pude usar `{{email}}` e `{{password}}` sem repetir os dados em cada chamada. A senha utilizada foi a do usuário de autenticação, e não a senha do banco de dados.
 
-![Environment e URL configurada, sem exibir a senha](prints/postman-ambiente-url.png)
-
-## Como importar a coleção
-
-1. Importe [a coleção](postman/testes-autenticacao.postman_collection.json) e [o modelo de ambiente](postman/supabase-exemplo.postman_environment.json) no Postman.
-2. No ambiente importado, preencha `api_key` com a chave anon legada do projeto, `email` e `password` com o usuário de teste. Se utilizar outro projeto, atualize `base_url`.
-3. Selecione o ambiente no topo da aplicação.
-4. Confira que os e-mails utilizados como inexistentes realmente não estão cadastrados no projeto escolhido.
-5. Abra cada requisição, confira os headers e o corpo JSON e envie individualmente.
-6. Compare o comportamento com a tabela de cenários. O código HTTP documentado abaixo é o observado nesta execução.
-
-O modelo não contém senha, chave nem token de sessão. A coleção usa a chave anon legada como Bearer. Uma chave nova `sb_publishable_` não deve ser colocada como token Bearer; a configuração precisa ser adaptada ao trocar o tipo de chave.
+Os arquivos estão na pasta [postman](postman/). A coleção pode ser importada no Postman junto com o modelo de ambiente. Os valores de e-mail, senha e chave devem ser preenchidos na cópia local do ambiente.
 
 # Configuração das Requisições
 
-**Método HTTP:** `POST`  
-**Endpoint:** `/auth/v1/token?grant_type=password`  
-**URL no Postman:** `{{base_url}}/auth/v1/token?grant_type=password`
+Configurei uma requisição POST para o endpoint:
 
-O método POST envia os dados de login no corpo da requisição. O parâmetro `grant_type=password` seleciona a autenticação por senha. A finalidade da chamada é solicitar uma sessão para o usuário informado.
+```text
+{{base_url}}/auth/v1/token?grant_type=password
+```
 
-## Headers
+Essa requisição envia o e-mail e a senha para solicitar uma sessão de login.
 
-| Header | Valor utilizado | Função |
-| --- | --- | --- |
-| `apikey` | `{{api_key}}` — valor real omitido (`XXXXX`) | Identifica o projeto pelo acesso da aplicação |
-| `Authorization` | `Bearer {{api_key}}` | Envia a chave anon legada no formato Bearer |
-| `Content-Type` | `application/json` | Indica que o corpo está em JSON |
+Utilizei estes headers:
 
-A aba Authorization foi configurada como **No Auth** para permitir o preenchimento manual do header `Authorization`, sem gerar outro header automaticamente.
+| Header | Valor |
+| --- | --- |
+| `apikey` | `{{api_key}}` |
+| `Authorization` | `Bearer {{api_key}}` |
+| `Content-Type` | `application/json` |
 
-![Endpoint POST e três headers configurados](prints/postman-endpoint-headers.png)
+O valor real da chave foi omitido da documentação. A configuração usa a chave anon legada.
 
-## Body JSON do login válido
-
-Configurado em **Body → raw → JSON**:
+Em Body, selecionei raw e JSON. Para o login válido, enviei:
 
 ```json
 {
@@ -118,67 +73,43 @@ Configurado em **Body → raw → JSON**:
 }
 ```
 
-O e-mail e a senha são substituídos pelos valores do Environment no envio. Os exemplos de senhas incorretas apresentados nos demais testes são entradas propositalmente inválidas.
+Dupliquei a requisição para os outros cenários, mantendo a URL e os headers e alterando os dados do Body.
 
 # Execução dos Testes
 
-Os cinco cenários foram executados manualmente pelo aluno. Em cada resposta, foram verificados o status HTTP, o conteúdo JSON, a mensagem ou código de erro e a presença ou ausência de `access_token`.
-
-## Tabela de cenários
+Executei os cinco cenários abaixo. Em cada um, conferi o status HTTP, a resposta JSON, a mensagem de erro e se foi retornado um access_token.
 
 | ID | Cenário | Entrada utilizada | Resultado esperado | Resultado obtido | Status |
 | --- | --- | --- | --- | --- | --- |
-| CT01 | Login válido | E-mail cadastrado e senha correta | HTTP 200 e access_token | HTTP 200 OK e access_token preenchido | Sucesso |
-| CT02 | Senha incorreta | E-mail cadastrado e senha incorreta | Rejeitar login sem token | HTTP 400; invalid_credentials | Sucesso |
-| CT03 | Usuário inexistente | E-mail não cadastrado e senha preenchida | Negar acesso sem token | HTTP 400; invalid_credentials | Sucesso |
-| CT04 | Campos vazios | E-mail e senha vazios | Erro de validação sem token | HTTP 400; validation_failed | Sucesso |
-| CT05 | Credenciais inválidas | E-mail não cadastrado e senha incorreta | Mensagem de erro sem token | HTTP 400; invalid_credentials | Sucesso |
+| CT01 | Login válido | E-mail cadastrado e senha correta | HTTP 200 e token de acesso | HTTP 200 e access_token retornado | Sucesso |
+| CT02 | Senha incorreta | E-mail cadastrado e senha errada | Login recusado, sem token | HTTP 400, invalid_credentials | Sucesso |
+| CT03 | Usuário inexistente | E-mail não cadastrado e senha preenchida | Acesso negado | HTTP 400, invalid_credentials | Sucesso |
+| CT04 | Campos vazios | E-mail e senha vazios | Erro de validação | HTTP 400, validation_failed | Sucesso |
+| CT05 | Credenciais inválidas | E-mail não cadastrado e senha errada | Mensagem de erro | HTTP 400, invalid_credentials | Sucesso |
 
-**Critério de status:** “Sucesso” significa que o comportamento observado correspondeu ao esperado. Nos cenários negativos, a rejeição do login é o resultado correto do teste.
+## CT01: login válido
 
-## CT01 — Login válido
+Com os dados corretos, recebi HTTP 200 OK. A resposta trouxe `access_token`, `token_type` com o valor `bearer` e `expires_in` igual a `3600`.
 
-Entrada: `email = {{email}}` e `password = {{password}}`.
+Os valores dos tokens foram ocultados no print.
 
-Resultado observado: **HTTP 200 OK**, campo `access_token` preenchido, `token_type` igual a `bearer` e `expires_in` igual a `3600`. A API criou uma sessão. O valor completo do token não acompanha a documentação pública.
+![Login válido](prints/ct01-login-valido.png)
 
-![CT01: login válido com HTTP 200 e início do campo access_token](prints/ct01-login-valido.png)
+## CT02: senha incorreta
 
-## CT02 — Senha incorreta
+Mantive o e-mail cadastrado e troquei a senha por `SenhaErrada987!`. A API retornou HTTP 400, com o código `invalid_credentials` e a mensagem `Invalid login credentials`.
 
-```json
-{
-  "email": "{{email}}",
-  "password": "SenhaErrada987!"
-}
-```
+![Senha incorreta](prints/ct02-senha-incorreta.png)
 
-Resultado observado: **HTTP 400 Bad Request**, sem `access_token`:
+## CT03: usuário inexistente
 
-```json
-{
-  "code": 400,
-  "error_code": "invalid_credentials",
-  "msg": "Invalid login credentials"
-}
-```
+Usei o e-mail `naocadastrado@example.com`, que não estava cadastrado no projeto. O resultado foi HTTP 400, com `invalid_credentials` e a mensagem `Invalid login credentials`.
 
-![CT02: senha incorreta rejeitada](prints/ct02-senha-incorreta.png)
+![Usuário inexistente](prints/ct03-usuario-inexistente.png)
 
-## CT03 — Usuário inexistente
+## CT04: campos vazios
 
-```json
-{
-  "email": "naocadastrado@example.com",
-  "password": "{{password}}"
-}
-```
-
-Resultado observado: **HTTP 400 Bad Request**, `error_code` igual a `invalid_credentials`, mensagem `Invalid login credentials` e ausência de `access_token`.
-
-![CT03: usuário inexistente rejeitado](prints/ct03-usuario-inexistente.png)
-
-## CT04 — Campos vazios
+Enviei os dois campos sem nenhum valor:
 
 ```json
 {
@@ -187,71 +118,38 @@ Resultado observado: **HTTP 400 Bad Request**, `error_code` igual a `invalid_cre
 }
 ```
 
-Resultado observado: **HTTP 400 Bad Request**, sem `access_token`:
+A API retornou HTTP 400, com o código `validation_failed` e a mensagem `missing email or phone`.
 
-```json
-{
-  "code": 400,
-  "error_code": "validation_failed",
-  "msg": "missing email or phone"
-}
-```
+![Campos vazios](prints/ct04-campos-vazios.png)
 
-A mensagem identifica a ausência de e-mail ou telefone. Essa resposta evidencia a rejeição dessa entrada vazia; o cenário não isola, sozinho, a validação do campo senha.
+## CT05: credenciais inválidas
 
-![CT04: validação dos campos vazios](prints/ct04-campos-vazios.png)
+Usei `outro-naocadastrado@example.com` e a senha `OutraSenhaErrada987!`. A resposta foi HTTP 400, com `invalid_credentials` e a mensagem `Invalid login credentials`.
 
-## CT05 — Credenciais inválidas
-
-```json
-{
-  "email": "outro-naocadastrado@example.com",
-  "password": "OutraSenhaErrada987!"
-}
-```
-
-Resultado observado: **HTTP 400 Bad Request**, `error_code` igual a `invalid_credentials`, mensagem `Invalid login credentials` e ausência de `access_token`. Neste cenário foram usados, ao mesmo tempo, um e-mail inexistente e uma senha diferente da válida.
-
-![CT05: par de credenciais inválidas rejeitado](prints/ct05-credenciais-invalidas.png)
-
-## Dificuldade durante a configuração
-
-Uma tentativa inicial retornou **HTTP 401 Unauthorized**, com `No API key found in request` e a indicação de ausência do header `apikey`. Nessa tentativa, o método também ainda estava como GET. A configuração foi corrigida para POST, com os headers exigidos e o body JSON. Em seguida, o login válido retornou HTTP 200.
-
-Esse episódio foi um erro de configuração da requisição. Ele não é contado como um dos cinco cenários finais e não comprova um defeito no Supabase. As sugestões automáticas do Postman para corrigir senhas foram desconsideradas nos testes negativos, pois as entradas inválidas eram intencionais.
+![Credenciais inválidas](prints/ct05-credenciais-invalidas.png)
 
 # Registro dos Testes
 
-Os registros estão na [planilha Excel](planilha/testes.xlsx) e em uma [cópia CSV](planilha/testes.csv). Cada linha contém ID do teste, cenário, entrada, resultado esperado, resultado obtido, status e observações. A coluna de observações indica a evidência correspondente em `prints/`.
+Registrei os testes em uma [planilha Excel](planilha/testes.xlsx), com ID, cenário, entrada, resultado esperado, resultado obtido, status e observações. Também deixei uma [cópia em CSV](planilha/testes.csv).
 
-![Visualização da planilha preenchida com os cinco testes](prints/planilha-testes.png)
+Esse registro ajuda a comparar as respostas e consultar depois quais dados foram usados em cada tentativa. Não encontrei falhas de autenticação nos cinco cenários executados.
 
-Por exemplo, o CT02 foi registrado como sucesso porque a senha incorreta gerou HTTP 400 e `invalid_credentials`, sem liberar uma sessão. O CT04 também teve sucesso, pois a API recusou os campos vazios com `validation_failed`.
-
-O registro facilita a revisão dos dados enviados, evita confundir erro HTTP esperado com falha de teste e permite comparar novas execuções com o comportamento observado. Não foram identificadas falhas funcionais nos cinco cenários finais. A dificuldade identificada foi a configuração incompleta da requisição inicial.
+![Planilha de testes preenchida](prints/planilha-testes.png)
 
 # Resultados Obtidos
 
-Os **cinco cenários** apresentaram o comportamento esperado: o login válido retornou uma sessão, e os outros quatro não retornaram token de acesso. Nos testes de senha incorreta, usuário inexistente e par inválido, a resposta foi a mesma mensagem genérica de credenciais inválidas.
+O login com os dados corretos retornou HTTP 200 e um token de acesso. Os outros quatro testes foram recusados com HTTP 400, sem retornar access_token.
 
-Os testes cobrem somente os cenários descritos. Não foram testados expiração e renovação de token, logout, bloqueio por tentativas, permissões de dados ou desempenho. A presença de `access_token` foi verificada no JSON; sua validade para acessar outro endpoint não foi testada nesta atividade.
+Senha incorreta, usuário inexistente e credenciais inválidas receberam a mesma mensagem: `Invalid login credentials`. Já os campos vazios retornaram `missing email or phone`.
 
-O resultado funcional dos testes foi satisfatório. A entrega ainda precisa complementar as evidências de configuração do Supabase com os prints do usuário, do provedor Email e das chaves. Também é necessário atender à exigência de ferramenta do enunciado: as execuções registradas são da versão Web, e não do aplicativo Desktop.
+No começo, uma tentativa retornou HTTP 401 com a mensagem `No API key found in request`. Eu ainda precisava incluir o header `apikey` e trocar o método de GET para POST. Depois que corrigi a requisição, o login funcionou.
 
 # Conclusão
 
-Consegui configurar a autenticação e executar os cinco cenários de teste. Com e-mail e senha corretos, o Supabase retornou HTTP 200 e um token de acesso. As entradas incorretas foram rejeitadas com HTTP 400, e os campos vazios geraram uma mensagem de validação.
+Consegui executar os cinco testes e obter as respostas esperadas. A autenticação funcionou com o usuário e a senha corretos e bloqueou as entradas inválidas.
 
-A principal dificuldade foi entender a diferença entre configurar variáveis e realmente enviá-las nos headers e no corpo da requisição. Na primeira tentativa faltou o header apikey, e o método ainda precisava ser alterado para POST. Após esses ajustes, foi possível obter o login válido e comparar os demais resultados.
+Minha maior dificuldade foi configurar a primeira requisição no Postman, principalmente os headers e o método HTTP. Depois disso, usei cópias da requisição para testar as outras situações.
 
-Não identifiquei defeitos funcionais nos cenários realizados. Como melhoria, seria útil acrescentar testes separados para apenas e-mail vazio e apenas senha vazia, além de verificar expiração, renovação e uso do token em uma rota protegida. As validações também poderiam ser automatizadas no Postman em uma etapa futura; os testes desta entrega foram manuais.
+Não identifiquei falhas nos cenários realizados. Para ampliar os testes, eu poderia verificar a expiração do token e testar o e-mail vazio e a senha vazia separadamente.
 
-Os testes de caixa cinza ajudaram a relacionar o que foi enviado com o que a API retornou. Conhecer a estrutura da chamada permitiu corrigir a configuração inicial e distinguir uma rejeição esperada de um comportamento incorreto.
-
-A documentação foi organizada em repositório público no GitHub. Para concluir a entrega conforme o enunciado, ainda é necessário adicionar as evidências do Supabase e resolver a diferença entre Postman Web e Desktop.
-
-## Referências
-
-- [Supabase: autenticação por senha](https://supabase.com/docs/guides/auth/passwords)
-- [Supabase: tipos de chave da API](https://supabase.com/docs/guides/getting-started/api-keys)
-- [Postman: variáveis de ambiente](https://learning.postman.com/docs/use/send-requests/variables/environment-variables)
+A atividade me ajudou a entender como uma API de autenticação recebe os dados e responde às tentativas de login. Conhecer parte da estrutura da requisição foi importante para encontrar o erro de configuração e conferir o comportamento da API.
